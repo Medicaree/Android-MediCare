@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "195457321058",
+    "project_id": "careemedi-3372d",
+    "storage_bucket": "careemedi-3372d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:195457321058:android:fd9deee27d9d863cc2293b",
+        "android_client_info": {
+          "package_name": "com.android.medicareapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "195457321058-fg1j9bj849mpvov1q2e3ih3cojaudj0e.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.android.medicareapp",
+            "certificate_hash": "aeb6ba8916f0efb816b03eaad5b4d387dd6c122c"
+          }
+        },
+        {
+          "client_id": "195457321058-cvqs5k5vllir938n0h8805ji00c06smb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2Ea5dbwBMbQ8tLPCk70AEvtEJxmGu3sA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "195457321058-cvqs5k5vllir938n0h8805ji00c06smb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
