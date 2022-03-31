@@ -13,30 +13,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/pName"
+            android:singleLine="true"
+            android:id="@+id/type"
             android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
             android:textSize="15dp"
             android:textColor="@color/ordertextcolor"
-            android:text="Pharmacy Name:"/>
+            android:text="Booking Type:"/>
         <TextView
+            android:singleLine="true"
             android:layout_marginTop="10dp"
-            android:layout_below="@id/pName"
-            android:id="@+id/date"
+            android:layout_below="@id/type"
+            android:id="@+id/name"
             android:layout_alignParentStart="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/montserrat_semibold"
             android:textSize="15dp"
             android:textColor="@color/ordertextcolor"
-            android:text="Date:"/>
+            android:text="Name:"/>
         <androidx.appcompat.widget.AppCompatButton
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/date"
+            android:layout_below="@id/name"
             android:id="@+id/statusBtn"
-            android:layout_margin="20dp"
+            android:layout_margin="30dp"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:padding="10dp"
@@ -47,33 +49,33 @@
             android:fontFamily="@font/montserrat_bold"
             android:background="@drawable/btnback"/>
         <RelativeLayout
+            android:layout_below="@+id/pName"
             android:id="@+id/imagePres"
             android:layout_alignParentEnd="true"
-            android:layout_width="90dp"
-            android:layout_height="110dp">
-            <ImageView
-                android:id="@+id/presImage"
-                android:layout_margin="5dp"
-                android:background="@drawable/roundbackborder"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-            <ImageView
-                android:id="@+id/camImage"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentBottom="true"
-                android:src="@drawable/ic_cam"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </RelativeLayout>
-        <TextView
-            android:layout_marginEnd="5dp"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/imagePres"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/montserrat_semibold"
-            android:textSize="11dp"
-            android:textColor="@color/ordertextcolor"
-            android:text="Prescription"/>
+            android:layout_height="wrap_content">
+            <TextView
+                android:singleLine="true"
+                android:id="@+id/date"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="15dp"
+                android:textColor="@color/ordertextcolor"
+                android:text="Date:"/>
+            <TextView
+                android:singleLine="true"
+                android:layout_marginTop="10dp"
+                android:layout_below="@id/date"
+                android:id="@+id/time"
+                android:layout_alignParentStart="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_semibold"
+                android:textSize="15dp"
+                android:textColor="@color/ordertextcolor"
+                android:text="TIme:"/>
+        </RelativeLayout>
     </RelativeLayout>
 </androidx.cardview.widget.CardView>

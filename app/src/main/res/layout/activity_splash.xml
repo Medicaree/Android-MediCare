@@ -14,7 +14,7 @@
         android:src="@drawable/ic_medical_sign"/>
     <TextView
         android:id="@+id/orText"
-        android:textColor="@color/white"
+        android:textColor="@android:color/white"
         android:fontFamily="@font/montserrat_extrabold"
         android:layout_centerInParent="true"
         android:text="MediCare"

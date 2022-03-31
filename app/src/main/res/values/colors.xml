@@ -18,5 +18,6 @@
     <color name="ordertextcolor">#616161</color>
     <color name="msgbackcolor">#E2F6FF</color>
     <color name="orderbackcolor">#E2F6FF</color>
+    <color name="newMsgtextColor">#B3B3B3</color>
 
 </resources>

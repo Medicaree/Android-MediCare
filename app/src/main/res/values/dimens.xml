@@ -2,4 +2,5 @@
 <resources>
     <dimen name="plusmargin">40dp</dimen>
     <dimen name="icon_size">100dp</dimen>
+    <dimen name="toolbarheight">50dp</dimen>
 </resources>
