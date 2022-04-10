@@ -108,11 +108,9 @@
                 android:background="@drawable/center" />
         </RelativeLayout>
         <GridView
-            android:paddingStart="5dp"
-            android:paddingEnd="5dp"
+            android:gravity="center"
             android:id="@+id/rvhome"
-            android:verticalSpacing="10dp"
-            android:horizontalSpacing="10dp"
+            android:verticalSpacing="15dp"
             android:layout_above="@+id/bottomtool"
             android:layout_below="@id/image"
             android:numColumns="2"

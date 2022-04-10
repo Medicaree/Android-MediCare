@@ -56,25 +56,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
-                    <com.google.android.material.textfield.TextInputLayout
+                    <Spinner
                         android:visibility="gone"
-                        android:id="@+id/menu" style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                        android:id="@+id/businessType"
                         android:layout_marginStart="20dp"
                         android:layout_marginEnd="20dp"
+                        android:padding="8dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="What type of business are you?">
-
-                        <AutoCompleteTextView
-                            android:backgroundTint="@color/white"
-                            android:background="@drawable/roundback"
-                            android:padding="8dp"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="none"
-                            />
-
-                    </com.google.android.material.textfield.TextInputLayout>
+                        android:layout_height="50dp"/>
                     <include
                         android:id="@+id/name"
                         layout="@layout/field_layout"/>
@@ -139,7 +128,7 @@
                 <RadioButton
                     android:buttonTint="@color/textcolor"
                     android:gravity="center"
-                    android:id="@+id/third"
+                    android:id="@+id/terms"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="I accept the Terms &amp; Conditions"

@@ -1,4 +1,4 @@
-package com.android.medicareapp.Adapters.chat.customeroperation;
+package com.android.medicareapp.Adapters.customeroperation;
 
 public class MessageModel {
     String name;

@@ -1,4 +1,4 @@
-package com.android.medicareapp.Adapters.chat.customeroperation;
+package com.android.medicareapp.Adapters.customeroperation;
 
 import android.widget.ImageView;
 

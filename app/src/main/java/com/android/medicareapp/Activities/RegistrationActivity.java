@@ -10,13 +10,21 @@ import android.Manifest;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.util.Base64;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Toast;
 
+import com.android.medicareapp.Firebase.User.UserModel;
 import com.android.medicareapp.R;
 import com.android.medicareapp.Utils.Constants;
 import com.android.medicareapp.databinding.ActivityRegistrationBinding;
@@ -25,19 +33,27 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 
-public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener {
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+
+public class RegistrationActivity extends AppCompatActivity implements View.OnClickListener,
+        AdapterView.OnItemSelectedListener {
     ActivityRegistrationBinding binding;
-    private static final int GalleryPick = 1;
     private static final int CAMERA_REQUEST = 100;
     private static final int STORAGE_REQUEST = 200;
-    private static final int IMAGEPICK_GALLERY_REQUEST = 300;
-    private static final int IMAGE_PICKCAMERA_REQUEST = 400;
     String cameraPermission[];
     String storagePermission[];
     Uri imageuri;
+    String as;
+    String[] types = { "Pharmacy", "Hospital", "Blood Banks", "Testing Labs"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +65,7 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
 
 
         // set Views for register as Customer and Business
-        String as = getIntent().getExtras().get(Constants.as).toString(); // receive data from previous activity
+        as = getIntent().getExtras().get(Constants.as).toString(); // receive data from previous activity
         if(as.equalsIgnoreCase(Constants.customer)) setForCustomer();
         else setForBusiness();
 
@@ -72,12 +88,18 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         binding.liecense.getRoot().setVisibility(View.VISIBLE);
         binding.liecense.field.setCompoundDrawablesWithIntrinsicBounds(null, null, ContextCompat.getDrawable(RegistrationActivity.this,R.drawable.ic_cam), null);
         binding.timeRadioGroup.setVisibility(View.VISIBLE);
-        binding.menu.setVisibility(View.VISIBLE);
+        binding.businessType.setVisibility(View.VISIBLE);
+        binding.businessType.setOnItemSelectedListener(this);
+        //Creating the ArrayAdapter instance having the country list
+        ArrayAdapter aa = new ArrayAdapter(this,android.R.layout.simple_spinner_item,types);
+        aa.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //Setting the ArrayAdapter data on the Spinner
+        binding.businessType.setAdapter(aa);
     }
     private FirebaseAuth mAuth;
-    void signUp(String email, String password){
+    void signUp(UserModel userModel){
         mAuth = FirebaseAuth.getInstance();
-        mAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(userModel.getEmail(), userModel.getPassword())
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
@@ -85,8 +107,8 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            startActivity(new Intent(RegistrationActivity.this, LoginActivity.class));
-                            finish();
+                            userModel.setUid(mAuth.getUid());
+                            saveUserToFirebase(userModel, userModel.isUser());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("TAG", "createUserWithEmail:failure", task.getException());
@@ -101,7 +123,33 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
         switch (v.getId())
         {
             case R.id.registerBtn:
-                signUp(binding.email.field.getText().toString(),binding.password.field.getText().toString());
+                if(binding.terms.isChecked()) {
+                    String type = getBusinessType()!=null?getBusinessType():"";
+                    String name = binding.name.field.getText().toString();
+                    String address = binding.address.field.getText().toString();
+                    String contact = binding.contact.field.getText().toString();
+                    String email = binding.email.field.getText().toString();
+                    String password = binding.password.field.getText().toString();
+                    if (as.equalsIgnoreCase(Constants.customer)) {
+                        //validations
+                        if (!name.isEmpty() && !address.isEmpty() && !contact.isEmpty() && !email.isEmpty()
+                                && !password.isEmpty() && !TextUtils.isEmpty(getImageString())) {
+                            UserModel userModel = new UserModel(name, address, contact, imageString, email, password, true);
+                            signUp(userModel);
+                        }
+                    } else if (as.equalsIgnoreCase(Constants.business)) {
+                        //validations
+                        if (!name.isEmpty() && !address.isEmpty() && !contact.isEmpty() && !email.isEmpty()
+                                && !password.isEmpty()
+                                && !TextUtils.isEmpty(getBusinessType()) && !TextUtils.isEmpty(getImageString())
+                                && binding.timeRadioGroup.getCheckedRadioButtonId()!=-1) {
+                            UserModel userModel = new UserModel(name, address, contact, imageString, email, password, false,
+                                    getBusinessType());
+                            signUp(userModel);
+                        }
+                    }
+                }
+                else Toast.makeText(this, "Please agree to terms and condition", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.uploadImageBtn:
                 uploadPic();
@@ -200,6 +248,16 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
     private void pickFromGallery() {
         CropImage.activity().start(RegistrationActivity.this);
     }
+    String imageString;
+    String businessType;
+
+    public String getBusinessType() {
+        return businessType;
+    }
+
+    public String getImageString() {
+        return imageString!=null?imageString:"";
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -208,8 +266,51 @@ public class RegistrationActivity extends AppCompatActivity implements View.OnCl
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
-                Picasso.with(this).load(resultUri).into(binding.image);
+                Bitmap bitmap= null;
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(),resultUri);
+                    // initialize byte stream
+                    ByteArrayOutputStream stream=new ByteArrayOutputStream();
+                    // compress Bitmap
+                    bitmap.compress(Bitmap.CompressFormat.JPEG,100,stream);
+                    // Initialize byte array
+                    byte[] bytes=stream.toByteArray();
+                    // get base64 encoded string
+                    imageString= Base64.encodeToString(bytes,Base64.DEFAULT);
+                    Picasso.with(this).load(resultUri).into(binding.image);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        businessType = types[position];
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+    public void saveUserToFirebase(UserModel userModel, boolean isUser){
+        DatabaseReference reference;
+        if(isUser) reference = FirebaseDatabase.getInstance().getReference("Users");
+        else reference = FirebaseDatabase.getInstance().getReference("BusinessUsers");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                reference.setValue(userModel);
+                if(isUser) startActivity(new Intent(RegistrationActivity.this, CustomerHomeActivity.class));
+                else startActivity(new Intent(RegistrationActivity.this, BusinessHomeActivity.class));
+                finish();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Toast.makeText(RegistrationActivity.this, "Error in register user", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

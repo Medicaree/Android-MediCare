@@ -9,4 +9,6 @@ public class Constants {
     public static String order = "ORDER";
     public static String msg = "MESSAGE";
     public static String booking = "BOOKING";
+    public static String bookingrequest = "BOOKINGREQUEST";
+    public static String orderrequest = "ORDERREQUEST";
 }

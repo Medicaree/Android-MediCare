@@ -1,6 +1,4 @@
-package com.android.medicareapp.Adapters.chat;
-
-import android.graphics.drawable.Drawable;
+package com.android.medicareapp.Adapters.homeadapter;
 
 public class CustomerHomeModel {
     String name;

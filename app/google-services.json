@@ -1,13 +1,14 @@
 {
   "project_info": {
     "project_number": "195457321058",
+    "firebase_url": "https://careemedi-3372d-default-rtdb.firebaseio.com",
     "project_id": "careemedi-3372d",
     "storage_bucket": "careemedi-3372d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:195457321058:android:fd9deee27d9d863cc2293b",
+        "mobilesdk_app_id": "1:195457321058:android:ca075ab1aea44eecc2293b",
         "android_client_info": {
           "package_name": "com.android.medicareapp"
         }

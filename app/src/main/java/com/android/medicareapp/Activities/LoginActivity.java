@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.android.medicareapp.R;
+import com.android.medicareapp.Utils.Constants;
 import com.android.medicareapp.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -41,7 +42,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            if(getIntent().getExtras().getString(Constants.as).equalsIgnoreCase(Constants.customer))
                             startActivity(new Intent(LoginActivity.this, CustomerHomeActivity.class));
+                            else startActivity(new Intent(LoginActivity.this, BusinessHomeActivity.class));
                             finish();
                         } else {
                             // If sign in fails, display a message to the user.

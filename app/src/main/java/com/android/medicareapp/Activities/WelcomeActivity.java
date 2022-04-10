@@ -13,6 +13,7 @@ import com.android.medicareapp.databinding.ActivityMainBinding;
 
 public class WelcomeActivity extends AppCompatActivity implements View.OnClickListener {
     ActivityMainBinding binding;
+    boolean isLogin = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +28,6 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -35,6 +35,7 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
         switch (v.getId())
         {
             case R.id.registerBtn:
+                isLogin = false;
                 new Handler().postDelayed(new Runnable() { // delay button effect
                     @Override
                     public void run() {
@@ -44,15 +45,33 @@ public class WelcomeActivity extends AppCompatActivity implements View.OnClickLi
                 },500);
                 break;
             case R.id.customerBtn:
+                if(isLogin) {
+                    startActivity(new Intent(WelcomeActivity.this, LoginActivity.class)
+                            .putExtra(Constants.as, Constants.customer));
+                }
+                else
                 startActivity(new Intent(WelcomeActivity.this, RegistrationActivity.class)
                         .putExtra(Constants.as,Constants.customer));
                 break;
             case R.id.businessBtn:
+                if(isLogin) {
+                    startActivity(new Intent(WelcomeActivity.this, LoginActivity.class)
+                            .putExtra(Constants.as, Constants.business));
+                }
+                else
                 startActivity(new Intent(WelcomeActivity.this, RegistrationActivity.class)
                         .putExtra(Constants.as,Constants.business));
                 break;
             case R.id.loginBtn:
-                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+                isLogin = true;
+                new Handler().postDelayed(new Runnable() { // delay button effect
+                    @Override
+                    public void run() {
+                        binding.welcomePage1.setVisibility(View.GONE);
+                        binding.welcomePage2.setVisibility(View.VISIBLE);
+                    }
+                },500);
+//                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
                 break;
         }
     }

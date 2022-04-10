@@ -1,4 +1,4 @@
-package com.android.medicareapp.Adapters.chat.customeroperation;
+package com.android.medicareapp.Adapters.customeroperation;
 
 import android.app.Activity;
 import android.content.Context;
@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.widget.AppCompatButton;
 
-import com.android.medicareapp.Adapters.chat.CustomerHomeModel;
 import com.android.medicareapp.R;
 
 import java.util.ArrayList;

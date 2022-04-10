@@ -1,6 +1,4 @@
-package com.android.medicareapp.Adapters.chat.customeroperation;
-
-import com.android.medicareapp.Activities.CustomerOperations;
+package com.android.medicareapp.Adapters.customeroperation;
 
 public class OperationModel {
     OrderModel orderModel;
